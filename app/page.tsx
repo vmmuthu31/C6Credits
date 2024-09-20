@@ -40,13 +40,13 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col items-center justify-center align-middle h-screen">
-        <p className="text-2xl mb-5">World ID Cloud Template</p>
+        <p className="text-2xl mb-5">World ID Cloud</p>
         <IDKitWidget
           action={action}
           app_id={app_id}
           onSuccess={onSuccess}
           handleVerify={handleProof}
-          verification_level={VerificationLevel.Device} // Change this to VerificationLevel.Device to accept Orb- and Device-verified users
+          verification_level={VerificationLevel.Device}
         />
         <button
           className="border border-black rounded-md"
