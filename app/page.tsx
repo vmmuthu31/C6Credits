@@ -1,101 +1,60 @@
-import Image from "next/image";
+"use client";
+
+import { VerificationLevel, IDKitWidget, useIDKit } from "@worldcoin/idkit";
+import type { ISuccessResult } from "@worldcoin/idkit";
+import { verify } from "./actions/verify";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const app_id = "app_cc3e55f0294dc00a57b6a815590bb6de";
+  const action = "ccredits";
+  if (!app_id) {
+    throw new Error("app_id is not set in environment variables!");
+  }
+  if (!action) {
+    throw new Error("action is not set in environment variables!");
+  }
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  const { setOpen } = useIDKit();
+
+  const onSuccess = (result: ISuccessResult) => {
+    // This is where you should perform frontend actions once a user has been verified, such as redirecting to a new page
+    window.alert(
+      "Successfully verified with World ID! Your nullifier hash is: " +
+        result.nullifier_hash
+    );
+  };
+
+  const handleProof = async (result: ISuccessResult) => {
+    console.log(
+      "Proof received from IDKit, sending to backend:\n",
+      JSON.stringify(result)
+    ); // Log the proof from IDKit to the console for visibility
+    const data = await verify(result);
+    if (data.success) {
+      console.log("Successful response from backend:\n", JSON.stringify(data)); // Log the response from our backend for visibility
+    } else {
+      throw new Error(`Verification failed: ${data.detail}`);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex flex-col items-center justify-center align-middle h-screen">
+        <p className="text-2xl mb-5">World ID Cloud Template</p>
+        <IDKitWidget
+          action={action}
+          app_id={app_id}
+          onSuccess={onSuccess}
+          handleVerify={handleProof}
+          verification_level={VerificationLevel.Orb} // Change this to VerificationLevel.Device to accept Orb- and Device-verified users
+        />
+        <button
+          className="border border-black rounded-md"
+          onClick={() => setOpen(true)}
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <div className="mx-3 my-1">Verify with World ID</div>
+        </button>
+      </div>
     </div>
   );
 }
