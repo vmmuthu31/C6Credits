@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import Layout from "../utils/Layout";
 
@@ -23,13 +24,13 @@ function OnboardCompany() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Submit the form to backend API
+    // Submit the form data to backend API
     console.log(companyDetails);
   };
 
   return (
     <Layout>
-      <div className="bg-white p-6 shadow-md rounded-lg">
+      <div className=" max-w-xl ">
         <h2 className="text-2xl font-bold mb-4">
           Onboard Company to Carbon Credits
         </h2>
