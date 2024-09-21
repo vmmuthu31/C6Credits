@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import Layout from "../utils/Layout";
 
@@ -28,7 +29,7 @@ function CarbonOffset() {
 
   return (
     <Layout>
-      <div className="bg-white p-6 shadow-md rounded-lg">
+      <div className="max-w-xl">
         <h2 className="text-2xl font-bold mb-4">Carbon Offset Using NFC</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

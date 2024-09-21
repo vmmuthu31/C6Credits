@@ -8,6 +8,7 @@ function OnboardCompany() {
     industry: "",
     location: "",
     carbonCreditsNeeded: "",
+    companyurl: "",
     contactEmail: "",
     contactPhone: "",
   });
@@ -85,7 +86,20 @@ function OnboardCompany() {
               required
             />
           </div>
-
+          <div className="mb-4">
+            <label htmlFor="companyurl" className="block text-sm font-medium">
+              Company URL
+            </label>
+            <input
+              type="text"
+              id="companyurl"
+              name="companyurl"
+              value={companyDetails.companyurl}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border rounded-md"
+              required
+            />
+          </div>
           <div className="mb-4">
             <label
               htmlFor="carbonCreditsNeeded"
