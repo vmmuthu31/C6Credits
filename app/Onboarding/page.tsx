@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../utils/Layout";
 import Modal from "../Components/Modal";
 import { BASEURL } from "@/Constants/constant";
 import WorldIDconnect from "../Components/WorldIDconnect";
+import { v4 as uuidv4 } from "uuid";
 
 function Onboarding() {
   const [step, setStep] = useState(1);
@@ -12,6 +13,14 @@ function Onboarding() {
   const [userType, setUserType] = useState<"company" | "offsetter" | null>(
     null
   );
+  useEffect(() => {
+    const generatedUUID = uuidv4();
+    setOffsetDetails((prevDetails) => ({
+      ...prevDetails,
+      nfcID: generatedUUID,
+    }));
+  }, []);
+
   const [companyDetails, setCompanyDetails] = useState({
     companyName: "",
     industry: "",
@@ -348,8 +357,8 @@ function Onboarding() {
                   name="nfcID"
                   value={offsetDetails.nfcID}
                   onChange={handleOffsetChange}
-                  className="mt-1 p-2 w-full border rounded-md"
-                  required
+                  className="mt-1 p-2 w-full border rounded-md bg-gray-200 text-gray-600 cursor-not-allowed"
+                  disabled
                 />
               </div>
               <div className="mb-4">
@@ -426,11 +435,10 @@ function Onboarding() {
                 />
               </div>
               <div className="pb-4">
-                {/* <WorldIDconnect
+                <WorldIDconnect
                   userType={userType}
                   onSuccessCallback={handleOffsetSubmit}
-                /> */}
-                <button onClick={handleOffsetSubmit}>he</button>
+                />
               </div>{" "}
               <div className="flex justify-between">
                 <button
