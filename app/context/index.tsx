@@ -6,10 +6,8 @@ import { createAppKit } from "@reown/appkit/react";
 import {
   mainnet,
   arbitrum,
-  avalanche,
+
   base,
-  optimism,
-  polygon,
 } from "@reown/appkit/networks";
 import React, { useState, type ReactNode } from "react";
 import {
@@ -36,7 +34,7 @@ const metadata = {
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [mainnet, arbitrum, avalanche, base, optimism, polygon],
+  networks: [mainnet, arbitrum, base],
   defaultNetwork: mainnet,
   metadata: metadata,
   features: {

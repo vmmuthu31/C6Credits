@@ -4,7 +4,17 @@ import Layout from "../utils/Layout";
 import Modal from "../Components/Modal";
 import { BASEURL } from "@/Constants/constant";
 import WorldIDconnect from "../Components/WorldIDconnect";
-
+import {
+  cookieToInitialState,
+  useAccount,
+  useDisconnect,
+  WagmiProvider,
+  useReadContract,
+  useWriteContract,
+  type Config,
+} from "wagmi";
+import abi from "../config/contractAbi.json"
+const contractAddresss = "0x064fDd34631E558dBD57EA80aaf4B02Da4b1fA19";
 function Onboarding() {
   const [step, setStep] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -44,6 +54,13 @@ function Onboarding() {
       [name]: value,
     });
   };
+  
+//   <button 
+//   onClick={ }
+// >
+//   Transfer
+// </button>
+
 
   const handleOffsetChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -58,6 +75,18 @@ function Onboarding() {
   const handleCompanySubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault(); // Only call preventDefault if there's an event
 
+    writeContract({ 
+      abi,
+      address: contractAddresss,
+      functionName: 'onboardCompany',
+      args: [
+        companyDetails.companyName,
+        companyDetails.industry,
+        companyDetails.carbonCreditsNeeded,
+        0
+      ],
+   })
+
     try {
       const response = await fetch(`${BASEURL}/api/auth/companies`, {
         method: "POST",
@@ -67,9 +96,12 @@ function Onboarding() {
         body: JSON.stringify(companyDetails),
       });
 
+
+
       if (response.ok) {
         console.log("Company onboarded successfully");
         setIsModalVisible(true); // Show the modal on success
+
       } else {
         const errorData = await response.json();
         console.error("Error onboarding company:", errorData.message);
@@ -81,6 +113,18 @@ function Onboarding() {
 
   const handleOffsetSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    writeContract({ 
+      abi,
+      address: contractAddresss,
+      functionName: 'registerProject',
+      args: [
+        offsetDetails.purpose,
+        offsetDetails.location,
+        offsetDetails.carbonOffsetAmount,
+        
+        1
+      ],
+   })
 
     try {
       const response = await fetch(`${BASEURL}/api/auth/offsets`, {
@@ -103,6 +147,10 @@ function Onboarding() {
     }
   };
 
+  const readd = useReadContract()
+
+
+  const { writeContract } = useWriteContract()
   return (
     <Layout>
       <div className="mx-auto max-w-3xl">
