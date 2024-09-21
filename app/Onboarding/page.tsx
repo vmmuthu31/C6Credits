@@ -55,7 +55,9 @@ function Onboarding() {
     });
   };
 
-  const handleCompanySubmit = async () => {
+  const handleCompanySubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault(); // Only call preventDefault if there's an event
+
     try {
       const response = await fetch(`${BASEURL}/api/auth/companies`, {
         method: "POST",
@@ -77,8 +79,9 @@ function Onboarding() {
     }
   };
 
-  // Handle form submit for Offsetter
-  const handleOffsetSubmit = async () => {
+  const handleOffsetSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+
     try {
       const response = await fetch(`${BASEURL}/api/auth/offsets`, {
         method: "POST",

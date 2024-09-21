@@ -6,7 +6,7 @@ import React from "react";
 
 interface WorldIDconnectProps {
   userType: "company" | "offsetter" | null;
-  onSuccessCallback: () => void; // Add callback prop for success
+  onSuccessCallback: (e?: React.FormEvent) => void;
 }
 
 function WorldIDconnect({ userType, onSuccessCallback }: WorldIDconnectProps) {
@@ -26,20 +26,19 @@ function WorldIDconnect({ userType, onSuccessCallback }: WorldIDconnectProps) {
       `Successfully verified with World ID as a ${userType}! Your nullifier hash is: ${result.nullifier_hash}`
     );
 
-    // Invoke the success callback to handle form submission
+    // Submit the form after successful verification
     if (onSuccessCallback) {
-      onSuccessCallback();
+      onSuccessCallback(); // This triggers handleCompanySubmit or handleOffsetSubmit
     }
   };
-
   const handleProof = async (result: ISuccessResult) => {
     console.log(
       "Proof received from IDKit, sending to backend:\n",
       JSON.stringify(result)
-    ); // Log the proof from IDKit to the console for visibility
+    );
     const data = await verify(result);
     if (data.success) {
-      console.log("Successful response from backend:\n", JSON.stringify(data)); // Log the response from our backend for visibility
+      console.log("Successful response from backend:\n", JSON.stringify(data));
     } else {
       throw new Error(`Verification failed: ${data.detail}`);
     }
