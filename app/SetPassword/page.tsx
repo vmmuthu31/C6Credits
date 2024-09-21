@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { BASEURL } from "@/Constants/constant";
 
 function SetPassword() {
   const [password, setPassword] = useState("");
@@ -26,16 +27,13 @@ function SetPassword() {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/auth/set-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token, password }),
-        }
-      );
+      const response = await fetch(`${BASEURL}/api/auth/set-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, password }),
+      });
 
       if (response.ok) {
         console.log("Password set successfully");

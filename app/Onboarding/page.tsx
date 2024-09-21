@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Layout from "../utils/Layout";
 import Modal from "../Components/Modal";
+import { BASEURL } from "@/Constants/constant";
 
 function Onboarding() {
   const [step, setStep] = useState(1);
@@ -56,7 +57,7 @@ function Onboarding() {
   const handleCompanySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/auth/companies", {
+      const response = await fetch(`${BASEURL}/api/auth/companies`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +81,7 @@ function Onboarding() {
   const handleOffsetSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/auth/offsets", {
+      const response = await fetch(`${BASEURL}/api/auth/offsets`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

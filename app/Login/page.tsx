@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { LOGIN } from "@/store/types/authTypes";
 import jwtDecode from "jsonwebtoken";
+import { BASEURL } from "@/Constants/constant";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +15,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/auth/login", {
+      const response = await fetch(`${BASEURL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
