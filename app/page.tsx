@@ -13,6 +13,7 @@ import frame from "./assets/frame.svg";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 export default function Home() {
   const [returnCount, setReturnCount] = useState(0);
@@ -42,8 +43,21 @@ export default function Home() {
     incrementCount(setMarketDemandCount, 148, 5000);
     incrementCount(setCompetitiveEdgeCount, 21.3, 5000);
   }, []);
+
+  const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.auth.user);
+
   function handleredirect() {
-    router.push("/Dashboard");
+    console.log("toknen", token);
+    if (token) {
+      router.push("/Onboarding");
+    } else {
+      if (user?.usertype === "company") {
+        router.push("/Dashboard");
+      } else if (user?.usertype === "offsetter") {
+        router.push("/Dashboard");
+      }
+    }
   }
 
   return (

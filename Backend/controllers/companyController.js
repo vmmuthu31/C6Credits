@@ -1,5 +1,6 @@
 const Company = require("../models/Company");
 const bcrypt = require("bcryptjs");
+const { generateToken, sendInviteEmail } = require("./authController");
 
 exports.getCompanies = async (req, res) => {
   try {
@@ -21,7 +22,6 @@ exports.getCompanyById = async (req, res) => {
     res.status(500).json({ message: "Error fetching company", error });
   }
 };
-
 exports.createCompany = async (req, res) => {
   try {
     const {
@@ -32,10 +32,17 @@ exports.createCompany = async (req, res) => {
       companyurl,
       contactEmail,
       contactPhone,
-      password,
     } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Check if company already exists
+    const existingCompany = await Company.findOne({ contactEmail });
+    if (existingCompany) {
+      return res
+        .status(400)
+        .json({ message: "Company with this contact email already exists" });
+    }
+
+    // Create new company
     const newCompany = new Company({
       companyName,
       industry,
@@ -44,11 +51,17 @@ exports.createCompany = async (req, res) => {
       companyurl,
       contactEmail,
       contactPhone,
-      password: hashedPassword,
     });
 
     await newCompany.save();
-    res.status(201).json({ message: "Company created successfully" });
+
+    const token = generateToken(contactEmail);
+    await sendInviteEmail(contactEmail, token, "company");
+
+    res.status(201).json({
+      message: "Company created successfully, invite sent",
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: "Error saving company data", error });
   }

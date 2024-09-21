@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import Layout from "../utils/Layout";
+import Modal from "../Components/Modal";
 
 function Onboarding() {
   const [step, setStep] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [userType, setUserType] = useState<"company" | "offsetter" | null>(
     null
@@ -64,6 +66,7 @@ function Onboarding() {
 
       if (response.ok) {
         console.log("Company onboarded successfully");
+        setIsModalVisible(true); // Show the modal on success
       } else {
         const errorData = await response.json();
         console.error("Error onboarding company:", errorData.message);
@@ -87,6 +90,7 @@ function Onboarding() {
 
       if (response.ok) {
         console.log("Carbon offset created successfully");
+        setIsModalVisible(true); // Show the modal on success
       } else {
         const errorData = await response.json();
         console.error("Error creating carbon offset:", errorData.message);
@@ -418,6 +422,10 @@ function Onboarding() {
           </div>
         )}
       </div>
+      <Modal
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+      />
     </Layout>
   );
 }

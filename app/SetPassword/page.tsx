@@ -1,12 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function SetPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [token, setToken] = useState("");
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     const tokenFromURL = searchParams.get("token");
@@ -37,6 +39,7 @@ function SetPassword() {
 
       if (response.ok) {
         console.log("Password set successfully");
+        router.push("/Login");
       } else {
         const errorData = await response.json();
         console.error("Error setting password:", errorData.message);

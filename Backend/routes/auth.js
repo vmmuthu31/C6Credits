@@ -24,10 +24,10 @@ router.post("/login", login);
 
 router.get("/companies", protect, getCompanies);
 router.get("/companies/:id", protect, getCompanyById);
-router.post("/companies", protect, createCompany);
+router.post("/companies", createCompany);
 
 router.get("/offsets", protect, getOffsets);
 router.get("/offsets/:id", protect, getOffsetById);
-router.post("/offsets", protect, createOffset);
+router.post("/offsets", createOffset);
 
 module.exports = router;
