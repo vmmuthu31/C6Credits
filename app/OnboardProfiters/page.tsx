@@ -5,6 +5,7 @@ import Layout from "../utils/Layout";
 function CarbonOffset() {
   const [offsetDetails, setOffsetDetails] = useState({
     nfcID: "",
+    email: "",
     carbonOffsetAmount: "",
     date: "",
     location: "",
@@ -21,10 +22,26 @@ function CarbonOffset() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Submit the form to backend API
-    console.log(offsetDetails);
+    try {
+      const response = await fetch("http://localhost:8000/api/auth/offsets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(offsetDetails),
+      });
+
+      if (response.ok) {
+        console.log("Carbon offset created successfully");
+      } else {
+        const errorData = await response.json();
+        console.error("Error creating carbon offset:", errorData.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -41,6 +58,20 @@ function CarbonOffset() {
               id="nfcID"
               name="nfcID"
               value={offsetDetails.nfcID}
+              onChange={handleChange}
+              className="mt-1 p-2 w-full border rounded-md"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="nfcID" className="block text-sm font-medium">
+              Email Address
+            </label>
+            <input
+              type="eamil"
+              id="email"
+              name="email"
+              value={offsetDetails.email}
               onChange={handleChange}
               className="mt-1 p-2 w-full border rounded-md"
               required
