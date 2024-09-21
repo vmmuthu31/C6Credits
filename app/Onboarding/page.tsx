@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Layout from "../utils/Layout";
 import Modal from "../Components/Modal";
 import { BASEURL } from "@/Constants/constant";
+import WorldIDconnect from "../Components/WorldIDconnect";
 
 function Onboarding() {
   const [step, setStep] = useState(1);
@@ -54,8 +55,7 @@ function Onboarding() {
     });
   };
 
-  const handleCompanySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCompanySubmit = async () => {
     try {
       const response = await fetch(`${BASEURL}/api/auth/companies`, {
         method: "POST",
@@ -78,8 +78,7 @@ function Onboarding() {
   };
 
   // Handle form submit for Offsetter
-  const handleOffsetSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleOffsetSubmit = async () => {
     try {
       const response = await fetch(`${BASEURL}/api/auth/offsets`, {
         method: "POST",
@@ -307,18 +306,18 @@ function Onboarding() {
                   required
                 />
               </div>
+              <div className="pb-4">
+                <WorldIDconnect
+                  userType={userType}
+                  onSuccessCallback={handleCompanySubmit}
+                />
+              </div>
               <div className="flex justify-between">
                 <button
                   onClick={() => setStep(1)}
                   className="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700"
                 >
                   Back
-                </button>
-                <button
-                  type="submit"
-                  className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
-                >
-                  Submit
                 </button>
               </div>
             </form>
@@ -360,7 +359,6 @@ function Onboarding() {
                   required
                 />
               </div>
-
               <div className="mb-4">
                 <label htmlFor="date" className="block text-sm font-medium">
                   Date of Offset
@@ -375,7 +373,6 @@ function Onboarding() {
                   required
                 />
               </div>
-
               <div className="mb-4">
                 <label htmlFor="location" className="block text-sm font-medium">
                   Location
@@ -390,7 +387,6 @@ function Onboarding() {
                   required
                 />
               </div>
-
               <div className="mb-4">
                 <label htmlFor="purpose" className="block text-sm font-medium">
                   Purpose of Offset
@@ -405,18 +401,18 @@ function Onboarding() {
                   required
                 />
               </div>
+              <div className="pb-4">
+                <WorldIDconnect
+                  userType={userType}
+                  onSuccessCallback={handleOffsetSubmit}
+                />
+              </div>{" "}
               <div className="flex justify-between">
                 <button
                   onClick={() => setStep(1)}
                   className="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700"
                 >
                   Back
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-                >
-                  Submit
                 </button>
               </div>
             </form>

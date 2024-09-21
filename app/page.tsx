@@ -49,7 +49,7 @@ export default function Home() {
 
   function handleredirect() {
     console.log("toknen", token);
-    if (token) {
+    if (!token) {
       router.push("/Onboarding");
     } else {
       if (user?.usertype === "company") {

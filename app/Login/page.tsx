@@ -2,15 +2,27 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { LOGIN } from "@/store/types/authTypes";
 import jwtDecode from "jsonwebtoken";
 import { BASEURL } from "@/Constants/constant";
+import { loginAction } from "@/store/types/authTypes";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const router = useRouter();
+  function parseJwt(token: string) {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+
+    return JSON.parse(jsonPayload);
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,21 +36,24 @@ function Login() {
       });
 
       const data = await response.json();
+      console.log(data);
 
-      if (response.ok && data.token) {
-        const decodedToken = jwtDecode.decode(data.token);
-        console.log(decodedToken); // You can view the user data here in the console
+      if (data && data.token) {
+        const decodedToken = parseJwt(data.token);
+        console.log("decoded token", decodedToken);
 
-        // Dispatch the user data and token to the redux store
-        dispatch(LOGIN({ token: data.token, user: decodedToken }));
-        router.push("/Dashboard");
-        if (decodedToken?.usertype === "company") {
+        if (decodedToken) {
+          dispatch(loginAction(data.token, decodedToken));
+        } else {
+          setError("Invalid token received.");
+        }
+
+        // Redirect based on user type
+        if (decodedToken.usertype === "company") {
           router.push("/Dashboard");
-        } else if (decodedToken?.usertype === "offsetter") {
+        } else if (decodedToken.usertype === "offsetter") {
           router.push("/Dashboard");
         }
-      } else {
-        setError("Invalid credentials. Please try again.");
       }
     } catch (error) {
       setError("Error logging in. Please try again later.");

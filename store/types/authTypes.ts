@@ -25,3 +25,13 @@ export interface User {
   email: string;
   usertype: "company" | "offsetter";
 }
+
+export const loginAction = (token: string, user: User): AuthActionTypes => ({
+  type: LOGIN,
+  payload: { token, user },
+});
+
+// Action creator for logout
+export const logoutAction = (): AuthActionTypes => ({
+  type: LOGOUT,
+});

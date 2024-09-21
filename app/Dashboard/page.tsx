@@ -1,14 +1,25 @@
+"use client";
 import React from "react";
 import Layout from "../utils/Layout";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 const Page = () => {
+  const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.auth.user);
+
+  console.log("Token:", token);
+  console.log("User:", user);
   return (
     <Layout>
       <div className="flex justify-between">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
         <Link
-          href="/RegisterProject"
+          href={`${
+            user?.usertype === "company"
+              ? "/RegisterCompany"
+              : "/RegisterProject"
+          }`}
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
         >
           Create Attestation
