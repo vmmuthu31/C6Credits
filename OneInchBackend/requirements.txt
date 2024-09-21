@@ -1,0 +1,4 @@
+requests
+moralis
+flask
+flask_cors
