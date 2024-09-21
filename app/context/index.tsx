@@ -13,6 +13,7 @@ import {
 } from "@reown/appkit/networks";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+import { arbitrumSepolia } from "viem/chains";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +31,15 @@ const metadata = {
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [mainnet, arbitrum, avalanche, base, optimism, polygon],
+  networks: [
+    mainnet,
+    arbitrum,
+    avalanche,
+    base,
+    optimism,
+    polygon,
+    arbitrumSepolia,
+  ],
   defaultNetwork: mainnet,
   metadata: metadata,
   features: {

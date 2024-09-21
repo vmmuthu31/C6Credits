@@ -18,7 +18,6 @@ export default function RegisterProject() {
 
   // Carbon credit details state
   const [carbonCreditDetails, setCarbonCreditDetails] = useState({
-    issuerAddress: "",
     projectName: "",
     projectType: "",
     carbonAmount: 0,
@@ -29,20 +28,21 @@ export default function RegisterProject() {
     try {
       setIsLoading(true);
       const client = new SignProtocolClient(SpMode.OnChain, {
-        chain: EvmChains.sepolia, // Set your blockchain network
+        chain: EvmChains.arbitrumSepolia, // Set your blockchain network
       });
 
-      const { issuerAddress, projectName, projectType, carbonAmount } =
-        carbonCreditDetails;
+      const { projectName, projectType, carbonAmount } = carbonCreditDetails;
+
+      const timestamp = Math.floor(Date.now() / 1000);
 
       const data = {
-        IssuerAddress: issuerAddress,
         ProjectName: projectName,
         ProjectType: projectType,
         CarbonAmount: carbonAmount,
+        Timestamp: timestamp,
       };
 
-      const schemaIdWithType = "onchain_evm_11155111_0x263"; // Example schema ID
+      const schemaIdWithType = "onchain_evm_421614_0x100"; // Example schema ID
       const schemaId = schemaIdWithType.split("_").pop(); // Extract schema ID
 
       // Create attestation using SignProtocolClient
@@ -66,7 +66,7 @@ export default function RegisterProject() {
     const indexService = new IndexService("testnet");
     const res = await indexService.queryAttestationList({
       id: "",
-      schemaId: "onchain_evm_11155111_0x263",
+      schemaId: "onchain_evm_421614_0x100",
       attester: "",
       page: 1,
       mode: "onchain",
@@ -90,22 +90,6 @@ export default function RegisterProject() {
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
             Project Attestation
           </h1>
-          <div className="mb-6">
-            <label className="block text-gray-700 font-semibold mb-2">
-              Issuer Address:
-            </label>
-            <input
-              type="text"
-              value={carbonCreditDetails.issuerAddress}
-              onChange={(e) =>
-                setCarbonCreditDetails({
-                  ...carbonCreditDetails,
-                  issuerAddress: e.target.value,
-                })
-              }
-              className="w-full p-2 border border-gray-300 rounded-lg"
-            />
-          </div>
 
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">
