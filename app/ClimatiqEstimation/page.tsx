@@ -48,7 +48,7 @@ const ClimatiqEstimation = () => {
 
   return (
     <Layout>
-      <div className="bg-gray-100 shadow-sm rounded-lg p-6 mt-8">
+      <div className="bg-gray-100 max-w-xl mx-auto shadow-sm rounded-lg p-6 mt-8">
         <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
           CO2 Emission Estimation
         </h2>
