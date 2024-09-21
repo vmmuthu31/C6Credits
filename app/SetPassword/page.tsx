@@ -47,47 +47,51 @@ function SetPassword() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">Set Your Password</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium">
-            New Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 p-2 w-full border rounded-md"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="confirmPassword"
-            className="block text-sm font-medium"
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 shadow-lg rounded-lg max-w-md w-full">
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Set Your Password
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-sm font-medium">
+              New Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium"
+            >
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-colors"
           >
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="mt-1 p-2 w-full border rounded-md"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-        >
-          Set Password
-        </button>
-      </form>
+            Set Password
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
