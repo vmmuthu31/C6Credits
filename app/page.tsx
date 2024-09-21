@@ -59,7 +59,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className=" bg-[#A8FFD4] min-h-screen">
+      <div className=" bg-[#F6F4EB] min-h-screen">
         <div className="p-10 px-14">
           <Header />
           <div className="flex pt-16 px-10 justify-between">
