@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Layout from "../utils/Layout";
+import Swap from "../Components/Swap";
 
 const Page = () => {
   const [selectedTokenScreen, setSelectedTokenScreen] =
@@ -46,76 +47,9 @@ const Page = () => {
 
             {/* Conditional Rendering based on Active Tab */}
             {selectedTokenScreen === "bridgeTokens" ? (
-              <div className="p-6 bg-white shadow rounded-md">
-                <h2 className="text-xl font-semibold mb-4">Bridge Tokens</h2>
-                <p className="text-gray-600 mb-6">
-                  With the Cross-Chain Bridge, you can bring your carbon assets
-                  from one chain to another in a fast, safe, and secure way.
-                  Start by selecting the type of token you want to bridge.
-                </p>
-
-                {/* Token Selection */}
-                <div className="flex mb-4">
-                  <div className="flex-1">
-                    <label className="text-gray-700">
-                      Balance: {balance} BCT
-                    </label>
-                  </div>
-                  <div className="flex-1">
-                    <select
-                      value={selectedToken}
-                      onChange={(e) => setSelectedToken(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-md w-full"
-                    >
-                      <option value="BCT">BCT (Base Carbon Tonne)</option>
-                      <option value="MCO2">MCO2 (Moss Carbon Credit)</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* From and To Networks */}
-                <div className="flex justify-between mb-4">
-                  <div className="flex-1 mr-4">
-                    <label className="block text-gray-700 mb-2">From</label>
-                    <select
-                      value={fromNetwork}
-                      onChange={(e) => setFromNetwork(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-md w-full"
-                    >
-                      <option value="Celo Mainnet">Celo Mainnet</option>
-                      <option value="Ethereum Mainnet">Ethereum Mainnet</option>
-                    </select>
-                  </div>
-                  <div className="flex-1 ml-4">
-                    <label className="block text-gray-700 mb-2">To</label>
-                    <select
-                      value={toNetwork}
-                      onChange={(e) => setToNetwork(e.target.value)}
-                      className="border border-gray-300 p-2 rounded-md w-full"
-                    >
-                      <option value="Polygon Mainnet">Polygon Mainnet</option>
-                      <option value="Ethereum Mainnet">Ethereum Mainnet</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Notice */}
-                <div className="bg-blue-50 p-4 rounded-md mb-6">
-                  <p className="text-gray-600">
-                    Use cross-chain bridge at your own risk. By clicking below,
-                    you agree to C6Credits{" "}
-                    <a href="#" className="text-blue-600 underline">
-                      Terms of Service
-                    </a>
-                    .
-                  </p>
-                </div>
-
-                {/* Bridge Button */}
-                <button className="w-full bg-pink-500 text-white py-2 rounded-md">
-                  Bridge {selectedToken}
-                </button>
-              </div>
+              <>
+                <Swap />
+              </>
             ) : (
               <div className="p-6 bg-white shadow rounded-md">
                 <h2 className="text-xl font-semibold mb-4">Transactions</h2>

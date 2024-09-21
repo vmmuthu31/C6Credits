@@ -1,17 +1,19 @@
+"use client";
 import React, { useState, useEffect, useCallback } from "react";
 import { Input, Popover, Radio, Modal, message } from "antd";
-import {
-  ArrowDownOutlined,
-  DownOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { DownOutlined, SettingOutlined } from "@ant-design/icons";
 import tokenList from "./json/TokenList.json";
 import axios from "axios";
-import { useSendTransaction, useWaitForTransaction } from "wagmi";
+import {
+  useAccount,
+  useSendTransaction,
+  useWaitForTransactionReceipt,
+} from "wagmi";
 import { debounce } from "lodash";
+import { FaExchangeAlt, FaSync } from "react-icons/fa";
 
 function Swap(props) {
-  const { address, isConnected } = props;
+  const { address, isConnected } = useAccount();
   const [messageApi, contextHolder] = message.useMessage();
   const [slippage, setSlippage] = useState(2);
   const [tokenOneAmount, setTokenOneAmount] = useState(null);
@@ -36,7 +38,7 @@ function Swap(props) {
     },
   });
 
-  const { isLoading, isSuccess } = useWaitForTransaction({
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
     hash: data?.hash,
   });
 
@@ -114,6 +116,7 @@ function Swap(props) {
       const res = await axios.get(
         `https://one-inch-backend.vercel.app/approve/allowance?tokenAddress=${tokenOne.address}&walletAddress=${address}`
       );
+      console.log(res.data);
       return res.data.allowance;
     } catch (error) {
       console.error("Error fetching allowance:", error);
@@ -124,7 +127,10 @@ function Swap(props) {
 
   async function fetchDexSwap() {
     try {
+      console.log("Fetching swap transaction...");
+
       const allowance = await checkAllowance();
+      console.log("Allowance:", allowance);
 
       if (allowance === "0") {
         try {
@@ -228,72 +234,115 @@ function Swap(props) {
   return (
     <>
       {contextHolder}
-      <Modal
-        open={isOpen}
-        footer={null}
-        onCancel={() => setIsOpen(false)}
-        title="Select a token"
-      >
-        <div className="modalContent">
-          {tokenList?.map((e, i) => {
-            return (
+      <main className="flex md:flex-row flex-col justify-center gap-10">
+        <div className="container max-w-xl bg-[#374c6e] text-white mt-7 rounded-2xl p-7">
+          <div className="flex justify-end space-x-4">
+            <FaSync
+              className={`cursor-pointer ${isLoading ? "animate-spin" : ""}`}
+              onClick={() => fetchPrices(tokenOne.address, tokenTwo.address)}
+            />
+            <Popover
+              content={settings}
+              title="Settings"
+              trigger="click"
+              placement="bottomRight"
+            >
+              <SettingOutlined className="cog" />
+            </Popover>{" "}
+          </div>
+
+          <div className="mt-2">
+            <h2 className="text-xl font-semibold mb-2">You Pay</h2>
+            <div className="flex mx-auto items-center gap-5 ">
+              <div className="flex pt-3 gap-1" onClick={() => openModal(1)}>
+                <img
+                  src={tokenOne.img}
+                  alt="assetOneLogo"
+                  className="assetLogo w-6 h-6"
+                />
+                {tokenOne.ticker}
+                <DownOutlined />
+              </div>
+              <Input
+                type="text"
+                value={tokenOneAmount}
+                onChange={(e) => changeAmount(e)}
+                disabled={!prices}
+                className="w-3/4 mt-3 p-2 border text-black border-gray-300 rounded-lg"
+                placeholder="Enter amount"
+              />
+            </div>
+          </div>
+
+          <div className="flex pt-10 justify-center ">
+            <FaExchangeAlt
+              className="text-4xl rotate-90 border p-2 rounded-full text-white cursor-pointer"
+              onClick={switchTokens}
+            />
+          </div>
+
+          <div className="mt-2">
+            <h2 className="text-xl font-semibold mb-2">You Receive</h2>
+            <div className="flex mx-auto items-center gap-5 ">
+              <div className="flex pt-3 gap-1" onClick={() => openModal(2)}>
+                <img
+                  src={tokenTwo.img}
+                  alt="assetTwoLogo"
+                  className="assetLogo w-6 h-6"
+                />
+                {tokenTwo.ticker}
+                <DownOutlined />
+              </div>
+              <Input
+                type="text"
+                value={tokenTwoAmount}
+                readOnly
+                className="w-3/4 mt-3 p-2 border text-black border-gray-300 rounded-lg bg-gray-100"
+                placeholder="Receive amount"
+              />
+            </div>
+          </div>
+
+          <button
+            className={`mt-5 w-full p-2 rounded-lg ${
+              isLoading || !tokenOneAmount || !isConnected
+                ? "bg-gray-500"
+                : "bg-blue-500"
+            }`}
+            onClick={fetchDexSwap}
+            disabled={!tokenOneAmount || !isConnected || isLoading}
+          >
+            {isLoading ? "Processing..." : "Swap"}
+          </button>
+        </div>
+
+        <Modal
+          open={isOpen}
+          footer={null}
+          onCancel={() => setIsOpen(false)}
+          title="Select a token"
+        >
+          <div className="modalContent">
+            {tokenList?.map((e, i) => (
               <div
-                className="tokenChoice"
+                className="tokenChoice flex items-center cursor-pointer"
                 key={i}
                 onClick={() => modifyToken(i)}
               >
-                <img src={e.img} alt={e.ticker} className="tokenLogo" />
-                <div className="tokenChoiceNames">
+                <img
+                  src={e.img}
+                  alt={e.ticker}
+                  className="tokenLogo w-6 h-6 mr-2"
+                />
+                <div>
                   <div className="tokenName">{e.name}</div>
                   <div className="tokenTicker">{e.ticker}</div>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </Modal>
-      <div className="tradeBox">
-        <div className="tradeBoxHeader">
-          <h4>Swap</h4>
-          <Popover
-            content={settings}
-            title="Settings"
-            trigger="click"
-            placement="bottomRight"
-          >
-            <SettingOutlined className="cog" />
-          </Popover>
-        </div>
-        <div className="inputs">
-          <Input
-            placeholder="0"
-            value={tokenOneAmount}
-            onChange={changeAmount}
-            disabled={!prices}
-          />
-          <Input placeholder="0" value={tokenTwoAmount} disabled={true} />
-          <div className="switchButton" onClick={switchTokens}>
-            <ArrowDownOutlined className="switchArrow" />
+            ))}
           </div>
-          <div className="assetOne" onClick={() => openModal(1)}>
-            <img src={tokenOne.img} alt="assetOneLogo" className="assetLogo" />
-            {tokenOne.ticker}
-            <DownOutlined />
-          </div>
-          <div className="assetTwo" onClick={() => openModal(2)}>
-            <img src={tokenTwo.img} alt="assetOneLogo" className="assetLogo" />
-            {tokenTwo.ticker}
-            <DownOutlined />
-          </div>
-        </div>
-        <div
-          className="swapButton"
-          disabled={!tokenOneAmount || !isConnected}
-          onClick={fetchDexSwap}
-        >
-          Swap
-        </div>
-      </div>
+        </Modal>
+      </main>
     </>
   );
 }
