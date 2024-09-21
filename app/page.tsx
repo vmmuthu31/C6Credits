@@ -13,7 +13,6 @@ import frame from "./assets/frame.svg";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import useRequireAuth from "./hooks/useRequireAuth";
 import { useSelector } from "react-redux";
 
 export default function Home() {
