@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { CiCalculator1 } from "react-icons/ci";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -153,6 +154,19 @@ const Sidebar = () => {
                   </svg>
                   {isOpen && (
                     <span className="text-lg font-medium">Retirements</span>
+                  )}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/ClimatiqEstimation"
+                  className="flex items-center space-x-4 text-gray-700 hover:text-blue-600"
+                >
+                  <CiCalculator1 />
+                  {isOpen && (
+                    <span className="text-lg font-medium">
+                      Carbon Calculator
+                    </span>
                   )}
                 </Link>
               </li>

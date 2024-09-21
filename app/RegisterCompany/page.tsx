@@ -11,29 +11,26 @@ import Layout from "../utils/Layout";
 import toast from "react-hot-toast";
 
 export default function RegisterCompany() {
-  const { address } = useAccount(); // Wagmi hook to get wallet address
+  const { address } = useAccount();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Carbon credit details state
   const [carbonCreditDetails, setCarbonCreditDetails] = useState({
     companyName: "",
     companyType: "",
     carbonEmit: 0,
   });
 
-  // Function to create attestation
   const createAttestation = async () => {
     try {
       setIsLoading(true);
       const client = new SignProtocolClient(SpMode.OnChain, {
-        chain: EvmChains.arbitrumSepolia, // Set your blockchain network
+        chain: EvmChains.arbitrumSepolia,
       });
 
       const { companyName, companyType, carbonEmit } = carbonCreditDetails;
 
       const timestamp = Math.floor(Date.now() / 1000);
 
-      // Attestation data
       const data = {
         CompanyName: companyName,
         CompanyType: companyType,
@@ -41,16 +38,14 @@ export default function RegisterCompany() {
         Timestamp: timestamp,
       };
 
-      const schemaIdWithType = "onchain_evm_421614_0xff"; // Example schema ID
-      const schemaId = schemaIdWithType.split("_").pop(); // Extract schema ID
+      const schemaIdWithType = "onchain_evm_421614_0xff";
+      const schemaId = schemaIdWithType.split("_").pop();
 
-      // Create attestation using SignProtocolClient
       const createAttestationRes = await client.createAttestation({
         schemaId,
         data,
       });
 
-      console.log("Attestation created:", createAttestationRes);
       toast.success("Carbon Credit Attestation created successfully!");
     } catch (error) {
       console.error("Error creating attestation:", error);
@@ -60,7 +55,6 @@ export default function RegisterCompany() {
     }
   };
 
-  // Fetch attestations
   const fetchAttestations = async () => {
     const indexService = new IndexService("testnet");
     const res = await indexService.queryAttestationList({
@@ -71,14 +65,12 @@ export default function RegisterCompany() {
       mode: "onchain",
       indexingValue: "",
     });
-    console.log("Attestation list:", res);
 
     if (res?.rows) {
       const filteredAttestations = res.rows.filter(
         (attestation) =>
           attestation.attester.toLowerCase() === address.toLowerCase()
       );
-      console.log("Filtered attestations:", filteredAttestations);
     }
   };
 

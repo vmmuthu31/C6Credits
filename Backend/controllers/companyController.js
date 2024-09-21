@@ -34,7 +34,6 @@ exports.createCompany = async (req, res) => {
       contactPhone,
     } = req.body;
 
-    // Check if company already exists
     const existingCompany = await Company.findOne({ contactEmail });
     if (existingCompany) {
       return res
@@ -42,7 +41,6 @@ exports.createCompany = async (req, res) => {
         .json({ message: "Company with this contact email already exists" });
     }
 
-    // Create new company
     const newCompany = new Company({
       companyName,
       industry,

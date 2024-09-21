@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../utils/Layout";
 import Modal from "../Components/Modal";
 import { BASEURL } from "@/Constants/constant";
 import WorldIDconnect from "../Components/WorldIDconnect";
+import { v4 as uuidv4 } from "uuid";
+import toast from "react-hot-toast";
 import {
   cookieToInitialState,
   useAccount,
@@ -22,6 +24,14 @@ function Onboarding() {
   const [userType, setUserType] = useState<"company" | "offsetter" | null>(
     null
   );
+  useEffect(() => {
+    const generatedUUID = uuidv4();
+    setOffsetDetails((prevDetails) => ({
+      ...prevDetails,
+      nfcID: generatedUUID,
+    }));
+  }, []);
+
   const [companyDetails, setCompanyDetails] = useState({
     companyName: "",
     industry: "",
@@ -99,11 +109,13 @@ function Onboarding() {
 
 
       if (response.ok) {
-        console.log("Company onboarded successfully");
-        setIsModalVisible(true); // Show the modal on success
-
+        toast.success("Company onboarded successfully!");
+        setTimeout(() => {
+          setIsModalVisible(true);
+        }, 5000);
       } else {
         const errorData = await response.json();
+        toast.error("Error onboarding company");
         console.error("Error onboarding company:", errorData.message);
       }
     } catch (error) {
@@ -126,21 +138,27 @@ function Onboarding() {
       ],
    })
 
+    const formattedDate = new Date(offsetDetails.date);
+
     try {
       const response = await fetch(`${BASEURL}/api/auth/offsets`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(offsetDetails),
+        body: JSON.stringify({
+          ...offsetDetails,
+          date: formattedDate,
+        }),
       });
 
       if (response.ok) {
-        console.log("Carbon offset created successfully");
-        setIsModalVisible(true); // Show the modal on success
+        toast.success("Carbon offset created successfully!");
+        setIsModalVisible(true);
       } else {
         const errorData = await response.json();
         console.error("Error creating carbon offset:", errorData.message);
+        toast.error("Error creating carbon offset");
       }
     } catch (error) {
       console.error("Error submitting offset form:", error);
@@ -388,6 +406,20 @@ function Onboarding() {
                   id="nfcID"
                   name="nfcID"
                   value={offsetDetails.nfcID}
+                  onChange={handleOffsetChange}
+                  className="mt-1 p-2 w-full border rounded-md bg-gray-200 text-gray-600 cursor-not-allowed"
+                  disabled
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium">
+                  Enter your Email{" "}
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={offsetDetails.email}
                   onChange={handleOffsetChange}
                   className="mt-1 p-2 w-full border rounded-md"
                   required

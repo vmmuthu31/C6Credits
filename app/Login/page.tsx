@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import jwtDecode from "jsonwebtoken";
 import { BASEURL } from "@/Constants/constant";
 import { loginAction } from "@/store/types/authTypes";
+import toast from "react-hot-toast";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,11 +37,10 @@ function Login() {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (data && data.token) {
+        toast.success("Logged in successfully!");
         const decodedToken = parseJwt(data.token);
-        console.log("decoded token", decodedToken);
 
         if (decodedToken) {
           dispatch(loginAction(data.token, decodedToken));
@@ -48,7 +48,6 @@ function Login() {
           setError("Invalid token received.");
         }
 
-        // Redirect based on user type
         if (decodedToken.usertype === "company") {
           router.push("/Dashboard");
         } else if (decodedToken.usertype === "offsetter") {
@@ -56,6 +55,7 @@ function Login() {
         }
       }
     } catch (error) {
+      toast.error("Error logging in. Please try again later.");
       setError("Error logging in. Please try again later.");
     }
   };

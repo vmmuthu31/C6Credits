@@ -103,7 +103,7 @@ const Page = () => {
                 <div className="bg-blue-50 p-4 rounded-md mb-6">
                   <p className="text-gray-600">
                     Use cross-chain bridge at your own risk. By clicking below,
-                    you agree to Toucan’s{" "}
+                    you agree to C6Credits{" "}
                     <a href="#" className="text-blue-600 underline">
                       Terms of Service
                     </a>

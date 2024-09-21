@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { BASEURL } from "@/Constants/constant";
+import toast from "react-hot-toast";
 
 function SetPassword() {
   const [password, setPassword] = useState("");
@@ -36,11 +37,12 @@ function SetPassword() {
       });
 
       if (response.ok) {
-        console.log("Password set successfully");
+        toast.success("Password set successfully. Please login.");
         router.push("/Login");
       } else {
         const errorData = await response.json();
         console.error("Error setting password:", errorData.message);
+        toast.error("Error setting password. Please try again later.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);

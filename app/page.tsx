@@ -13,7 +13,7 @@ import frame from "./assets/frame.svg";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import useRequireAuth from "./hooks/useRequireAuth";
 
 export default function Home() {
   const [returnCount, setReturnCount] = useState(0);
@@ -44,11 +44,8 @@ export default function Home() {
     incrementCount(setCompetitiveEdgeCount, 21.3, 5000);
   }, []);
 
-  const token = useSelector((state) => state.auth.token);
-  const user = useSelector((state) => state.auth.user);
-
+  const { token, user } = useRequireAuth();
   function handleredirect() {
-    console.log("toknen", token);
     if (!token) {
       router.push("/Onboarding");
     } else {
