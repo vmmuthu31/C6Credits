@@ -1,9 +1,7 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Use Next.js router
 import { useAccount } from "wagmi";
 import {
-  Attestation,
   EvmChains,
   IndexService,
   SignProtocolClient,
@@ -11,17 +9,16 @@ import {
 } from "@ethsign/sp-sdk";
 import Layout from "../utils/Layout";
 
-export default function RegisterProject() {
+export default function RegisterCompany() {
   const { address } = useAccount(); // Wagmi hook to get wallet address
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   // Carbon credit details state
   const [carbonCreditDetails, setCarbonCreditDetails] = useState({
-    issuerAddress: "",
-    projectName: "",
-    projectType: "",
-    carbonAmount: 0,
+    companyAddress: "",
+    companyName: "",
+    companyType: "",
+    carbonEmit: 0,
   });
 
   // Function to create attestation
@@ -32,17 +29,18 @@ export default function RegisterProject() {
         chain: EvmChains.sepolia, // Set your blockchain network
       });
 
-      const { issuerAddress, projectName, projectType, carbonAmount } =
+      const { companyAddress, companyName, companyType, carbonEmit } =
         carbonCreditDetails;
 
+      // Attestation data
       const data = {
-        IssuerAddress: issuerAddress,
-        ProjectName: projectName,
-        ProjectType: projectType,
-        CarbonAmount: carbonAmount,
+        IssuerAddress: companyAddress,
+        ProjectName: companyName,
+        ProjectType: companyType,
+        CarbonAmount: carbonEmit,
       };
 
-      const schemaIdWithType = "onchain_evm_11155111_0x263"; // Example schema ID
+      const schemaIdWithType = "onchain_evm_421614_0xff"; // Example schema ID
       const schemaId = schemaIdWithType.split("_").pop(); // Extract schema ID
 
       // Create attestation using SignProtocolClient
@@ -66,7 +64,7 @@ export default function RegisterProject() {
     const indexService = new IndexService("testnet");
     const res = await indexService.queryAttestationList({
       id: "",
-      schemaId: "onchain_evm_11155111_0x263",
+      schemaId: "onchain_evm_11155111_0x262",
       attester: "",
       page: 1,
       mode: "onchain",
@@ -85,22 +83,22 @@ export default function RegisterProject() {
 
   return (
     <Layout>
-      <div className="min-h-screen flex w-full justify-center ">
-        <div className=" p-8 rounded-lg  max-w-lg w-full">
+      <div className="min-h-screen flex justify-center ">
+        <div className=" p-8 rounded-lg max-w-lg w-full">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-            Project Attestation
+            Company Attestation
           </h1>
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">
-              Issuer Address:
+              Company Address:
             </label>
             <input
               type="text"
-              value={carbonCreditDetails.issuerAddress}
+              value={carbonCreditDetails.companyAddress}
               onChange={(e) =>
                 setCarbonCreditDetails({
                   ...carbonCreditDetails,
-                  issuerAddress: e.target.value,
+                  companyAddress: e.target.value,
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-lg"
@@ -109,15 +107,15 @@ export default function RegisterProject() {
 
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">
-              Project Name:
+              Company Name:
             </label>
             <input
               type="text"
-              value={carbonCreditDetails.projectName}
+              value={carbonCreditDetails.companyName}
               onChange={(e) =>
                 setCarbonCreditDetails({
                   ...carbonCreditDetails,
-                  projectName: e.target.value,
+                  companyName: e.target.value,
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-lg"
@@ -126,15 +124,15 @@ export default function RegisterProject() {
 
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">
-              Project Type:
+              Company Type:
             </label>
             <input
               type="text"
-              value={carbonCreditDetails.projectType}
+              value={carbonCreditDetails.companyType}
               onChange={(e) =>
                 setCarbonCreditDetails({
                   ...carbonCreditDetails,
-                  projectType: e.target.value,
+                  companyType: e.target.value,
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-lg"
@@ -143,15 +141,15 @@ export default function RegisterProject() {
 
           <div className="mb-6">
             <label className="block text-gray-700 font-semibold mb-2">
-              Carbon Amount (metric tons):
+              Carbon Emit (metric tons):
             </label>
             <input
               type="number"
-              value={carbonCreditDetails.carbonAmount}
+              value={carbonCreditDetails.carbonEmit}
               onChange={(e) =>
                 setCarbonCreditDetails({
                   ...carbonCreditDetails,
-                  carbonAmount: e.target.value,
+                  carbonEmit: e.target.value,
                 })
               }
               className="w-full p-2 border border-gray-300 rounded-lg"

@@ -1,14 +1,18 @@
 import React from "react";
 import Layout from "../utils/Layout";
+import Link from "next/link";
 
 const Page = () => {
   return (
     <Layout>
       <div className="flex justify-between">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+        <Link
+          href="/RegisterProject"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
           Create Attestation
-        </button>
+        </Link>
       </div>
       <div className="flex h-screen">
         <div className="p-8 space-y-8">
