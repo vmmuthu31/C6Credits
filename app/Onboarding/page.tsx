@@ -65,12 +65,6 @@ function Onboarding() {
     });
   };
   
-//   <button 
-//   onClick={ }
-// >
-//   Transfer
-// </button>
-
 
   const handleOffsetChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -85,17 +79,7 @@ function Onboarding() {
   const handleCompanySubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault(); // Only call preventDefault if there's an event
 
-    writeContract({ 
-      abi,
-      address: contractAddresss,
-      functionName: 'onboardCompany',
-      args: [
-        companyDetails.companyName,
-        companyDetails.industry,
-        companyDetails.carbonCreditsNeeded,
-        0
-      ],
-   })
+
 
     try {
       const response = await fetch(`${BASEURL}/api/auth/companies`, {
@@ -504,7 +488,11 @@ function Onboarding() {
       </div>
       <Modal
         isVisible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
+        onClose={() =>{ setIsModalVisible(false);
+
+   
+        }
+        }
       />
     </Layout>
   );
