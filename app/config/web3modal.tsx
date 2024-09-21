@@ -5,7 +5,7 @@ import { EVMEthers5Client } from "@reown/appkit-adapter-ethers5";
 import { ReactNode } from "react";
 import { hederaTestnet, sepolia } from "viem/chains";
 
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
+const projectId = "9a6625b33eb7ffa6b6e25963ede2feb7";
 
 const ethers5Adapter = new EVMEthers5Client();
 
