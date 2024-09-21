@@ -22,14 +22,7 @@ function WorldIDconnect({ userType, onSuccessCallback }: WorldIDconnectProps) {
   const { setOpen } = useIDKit();
 
   const onSuccess = (result: ISuccessResult) => {
-    window.alert(
-      `Successfully verified with World ID as a ${userType}! Your nullifier hash is: ${result.nullifier_hash}`
-    );
-
-    // Submit the form after successful verification
-    if (onSuccessCallback) {
-      onSuccessCallback(); // This triggers handleCompanySubmit or handleOffsetSubmit
-    }
+    console.log("Proof received from IDKit:\n", JSON.stringify(result));
   };
   const handleProof = async (result: ISuccessResult) => {
     console.log(
@@ -39,6 +32,9 @@ function WorldIDconnect({ userType, onSuccessCallback }: WorldIDconnectProps) {
     const data = await verify(result);
     if (data.success) {
       console.log("Successful response from backend:\n", JSON.stringify(data));
+      if (onSuccessCallback) {
+        onSuccessCallback();
+      }
     } else {
       throw new Error(`Verification failed: ${data.detail}`);
     }

@@ -56,7 +56,7 @@ function Onboarding() {
   };
 
   const handleCompanySubmit = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault(); // Only call preventDefault if there's an event
+    if (e) e.preventDefault();
 
     try {
       const response = await fetch(`${BASEURL}/api/auth/companies`, {
@@ -69,7 +69,9 @@ function Onboarding() {
 
       if (response.ok) {
         console.log("Company onboarded successfully");
-        setIsModalVisible(true); // Show the modal on success
+        setTimeout(() => {
+          setIsModalVisible(true); // Show the modal on success
+        }, 5000);
       } else {
         const errorData = await response.json();
         console.error("Error onboarding company:", errorData.message);
@@ -82,18 +84,23 @@ function Onboarding() {
   const handleOffsetSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 
+    const formattedDate = new Date(offsetDetails.date);
+
     try {
       const response = await fetch(`${BASEURL}/api/auth/offsets`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(offsetDetails),
+        body: JSON.stringify({
+          ...offsetDetails,
+          date: formattedDate,
+        }),
       });
 
       if (response.ok) {
         console.log("Carbon offset created successfully");
-        setIsModalVisible(true); // Show the modal on success
+        setIsModalVisible(true);
       } else {
         const errorData = await response.json();
         console.error("Error creating carbon offset:", errorData.message);
@@ -340,6 +347,20 @@ function Onboarding() {
                   id="nfcID"
                   name="nfcID"
                   value={offsetDetails.nfcID}
+                  onChange={handleOffsetChange}
+                  className="mt-1 p-2 w-full border rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium">
+                  Enter your Email{" "}
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={offsetDetails.email}
                   onChange={handleOffsetChange}
                   className="mt-1 p-2 w-full border rounded-md"
                   required
