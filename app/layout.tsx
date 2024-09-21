@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ContextProvider from "./context";
 import { headers } from "next/headers";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "C6Credits",
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ContextProvider cookies={cookies}>{children}</ContextProvider>
+        <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>
   );

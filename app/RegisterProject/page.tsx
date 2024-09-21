@@ -9,6 +9,7 @@ import {
   SignProtocolClient,
   SpMode,
 } from "@ethsign/sp-sdk";
+import { toast } from "react-hot-toast"; // Import toast from react-hot-toast
 import Layout from "../utils/Layout";
 
 export default function RegisterProject() {
@@ -52,10 +53,10 @@ export default function RegisterProject() {
       });
 
       console.log("Attestation created:", createAttestationRes);
-      alert("Carbon Credit Attestation created successfully!");
+      toast.success("Carbon Credit Attestation created successfully!"); // Show success toast
     } catch (error) {
       console.error("Error creating attestation:", error);
-      alert("Failed to create attestation");
+      toast.error("Failed to create attestation"); // Show error toast
     } finally {
       setIsLoading(false);
     }

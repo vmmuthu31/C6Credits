@@ -8,6 +8,7 @@ import {
   SpMode,
 } from "@ethsign/sp-sdk";
 import Layout from "../utils/Layout";
+import toast from "react-hot-toast";
 
 export default function RegisterCompany() {
   const { address } = useAccount(); // Wagmi hook to get wallet address
@@ -50,10 +51,10 @@ export default function RegisterCompany() {
       });
 
       console.log("Attestation created:", createAttestationRes);
-      alert("Carbon Credit Attestation created successfully!");
+      toast.success("Carbon Credit Attestation created successfully!");
     } catch (error) {
       console.error("Error creating attestation:", error);
-      alert("Failed to create attestation");
+      toast.error("Failed to create attestation");
     } finally {
       setIsLoading(false);
     }
