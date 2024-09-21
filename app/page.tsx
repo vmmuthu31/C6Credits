@@ -14,6 +14,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import useRequireAuth from "./hooks/useRequireAuth";
+import { useSelector } from "react-redux";
 
 export default function Home() {
   const [returnCount, setReturnCount] = useState(0);
@@ -44,7 +45,8 @@ export default function Home() {
     incrementCount(setCompetitiveEdgeCount, 21.3, 5000);
   }, []);
 
-  const { token, user } = useRequireAuth();
+  const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.auth.user);
   function handleredirect() {
     if (!token) {
       router.push("/Onboarding");
