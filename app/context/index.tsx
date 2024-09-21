@@ -14,22 +14,19 @@ import {
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
 
-// Set up queryClient
 const queryClient = new QueryClient();
 
 if (!projectId) {
   throw new Error("Project ID is not defined");
 }
 
-// Set up metadata
 const metadata = {
   name: "appkit-example-scroll",
   description: "AppKit Example - Scroll",
-  url: "https://scrollapp.com", // origin must match your domain & subdomain
+  url: "https://scrollapp.com",
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
 
-// Create the modal
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
@@ -37,9 +34,17 @@ const modal = createAppKit({
   defaultNetwork: mainnet,
   metadata: metadata,
   features: {
-    analytics: true, // Optional - defaults to your Cloud configuration
+    analytics: true,
   },
 });
+
+export function CustomButton({ props }: { props: string }) {
+  return (
+    <button className={props} onClick={() => modal.open()}>
+      Connect Wallet
+    </button>
+  );
+}
 
 export function ConnectButton() {
   return (

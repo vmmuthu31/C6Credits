@@ -12,13 +12,18 @@ import React, { useState, useEffect } from "react";
 import frame from "./assets/frame.svg";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [returnCount, setReturnCount] = useState(0);
   const [marketDemandCount, setMarketDemandCount] = useState(0);
   const [competitiveEdgeCount, setCompetitiveEdgeCount] = useState(0);
-
-  const incrementCount = (setValue, target, duration) => {
+  const router = useRouter();
+  const incrementCount = (
+    setValue: React.Dispatch<React.SetStateAction<number>>,
+    target: number,
+    duration: number
+  ) => {
     let start = 0;
     const increment = target / (duration / 10);
     const interval = setInterval(() => {
@@ -37,6 +42,9 @@ export default function Home() {
     incrementCount(setMarketDemandCount, 148, 5000);
     incrementCount(setCompetitiveEdgeCount, 21.3, 5000);
   }, []);
+  function handleredirect() {
+    router.push("/Dashboard");
+  }
 
   return (
     <div>
@@ -53,7 +61,10 @@ export default function Home() {
                 to trade verified carbon credits, powered by blockchain
                 innovation and cross-chain compatibility.
               </p>
-              <button className="bg-[#05AA58] px-8 py-2 rounded-full text-white text-2xl">
+              <button
+                onClick={handleredirect}
+                className="bg-[#05AA58] px-8 py-2 rounded-full text-white text-2xl"
+              >
                 Start Trading
               </button>
               <div>

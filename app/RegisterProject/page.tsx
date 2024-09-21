@@ -7,6 +7,7 @@ import {
   SignProtocolClient,
   SpMode,
 } from "@ethsign/sp-sdk";
+import Layout from "../utils/Layout";
 
 export default function RegisterProject() {
   const { address } = useAccount();
@@ -97,127 +98,129 @@ export default function RegisterProject() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h1>Carbon Credit Dashboard</h1>
+    <Layout>
+      <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+        <h1>Carbon Credit Dashboard</h1>
 
-      <div style={{ marginBottom: "20px" }}>
-        <label>Issuer Address:</label>
-        <input
-          type="text"
-          value={carbonCreditDetails.issuerAddress}
-          onChange={(e) =>
-            setCarbonCreditDetails({
-              ...carbonCreditDetails,
-              issuerAddress: e.target.value,
-            })
-          }
-          style={{ display: "block", width: "100%", marginBottom: "10px" }}
-        />
+        <div style={{ marginBottom: "20px" }}>
+          <label>Issuer Address:</label>
+          <input
+            type="text"
+            value={carbonCreditDetails.issuerAddress}
+            onChange={(e) =>
+              setCarbonCreditDetails({
+                ...carbonCreditDetails,
+                issuerAddress: e.target.value,
+              })
+            }
+            style={{ display: "block", width: "100%", marginBottom: "10px" }}
+          />
 
-        <label>Project Name:</label>
-        <input
-          type="text"
-          value={carbonCreditDetails.projectName}
-          onChange={(e) =>
-            setCarbonCreditDetails({
-              ...carbonCreditDetails,
-              projectName: e.target.value,
-            })
-          }
-          style={{ display: "block", width: "100%", marginBottom: "10px" }}
-        />
+          <label>Project Name:</label>
+          <input
+            type="text"
+            value={carbonCreditDetails.projectName}
+            onChange={(e) =>
+              setCarbonCreditDetails({
+                ...carbonCreditDetails,
+                projectName: e.target.value,
+              })
+            }
+            style={{ display: "block", width: "100%", marginBottom: "10px" }}
+          />
 
-        <label>Project Type:</label>
-        <input
-          type="text"
-          value={carbonCreditDetails.projectType}
-          onChange={(e) =>
-            setCarbonCreditDetails({
-              ...carbonCreditDetails,
-              projectType: e.target.value,
-            })
-          }
-          style={{ display: "block", width: "100%", marginBottom: "10px" }}
-        />
+          <label>Project Type:</label>
+          <input
+            type="text"
+            value={carbonCreditDetails.projectType}
+            onChange={(e) =>
+              setCarbonCreditDetails({
+                ...carbonCreditDetails,
+                projectType: e.target.value,
+              })
+            }
+            style={{ display: "block", width: "100%", marginBottom: "10px" }}
+          />
 
-        <label>Carbon Amount (metric tons):</label>
-        <input
-          type="number"
-          value={carbonCreditDetails.carbonAmount}
-          onChange={(e) =>
-            setCarbonCreditDetails({
-              ...carbonCreditDetails,
-              carbonAmount: Number(e.target.value),
-            })
-          }
-          style={{ display: "block", width: "100%", marginBottom: "10px" }}
-        />
+          <label>Carbon Amount (metric tons):</label>
+          <input
+            type="number"
+            value={carbonCreditDetails.carbonAmount}
+            onChange={(e) =>
+              setCarbonCreditDetails({
+                ...carbonCreditDetails,
+                carbonAmount: Number(e.target.value),
+              })
+            }
+            style={{ display: "block", width: "100%", marginBottom: "10px" }}
+          />
 
-        <label>Token Standard:</label>
-        <select
-          value={carbonCreditDetails.tokenStandard}
-          onChange={(e) =>
-            setCarbonCreditDetails({
-              ...carbonCreditDetails,
-              tokenStandard: e.target.value,
-            })
-          }
-          style={{ display: "block", width: "100%", marginBottom: "10px" }}
-        >
-          <option value="ERC-721">ERC-721</option>
-          <option value="ERC-1155">ERC-1155</option>
-        </select>
+          <label>Token Standard:</label>
+          <select
+            value={carbonCreditDetails.tokenStandard}
+            onChange={(e) =>
+              setCarbonCreditDetails({
+                ...carbonCreditDetails,
+                tokenStandard: e.target.value,
+              })
+            }
+            style={{ display: "block", width: "100%", marginBottom: "10px" }}
+          >
+            <option value="ERC-721">ERC-721</option>
+            <option value="ERC-1155">ERC-1155</option>
+          </select>
 
-        <label>Blockchain Network:</label>
-        <select
-          value={carbonCreditDetails.blockchainNetwork}
-          onChange={(e) =>
-            setCarbonCreditDetails({
-              ...carbonCreditDetails,
-              blockchainNetwork: e.target.value,
-            })
-          }
-          style={{ display: "block", width: "100%", marginBottom: "10px" }}
-        >
-          <option value="Ethereum">Ethereum</option>
-          <option value="Celo">Celo</option>
-        </select>
+          <label>Blockchain Network:</label>
+          <select
+            value={carbonCreditDetails.blockchainNetwork}
+            onChange={(e) =>
+              setCarbonCreditDetails({
+                ...carbonCreditDetails,
+                blockchainNetwork: e.target.value,
+              })
+            }
+            style={{ display: "block", width: "100%", marginBottom: "10px" }}
+          >
+            <option value="Ethereum">Ethereum</option>
+            <option value="Celo">Celo</option>
+          </select>
+
+          <button
+            onClick={createAttestation}
+            disabled={isLoading}
+            style={{
+              marginTop: "10px",
+              padding: "10px",
+              backgroundColor: "#4CAF50",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            {isLoading ? "Creating..." : "Create Attestation"}
+          </button>
+        </div>
 
         <button
-          onClick={createAttestation}
+          onClick={fetchAttestations}
           disabled={isLoading}
           style={{
-            marginTop: "10px",
             padding: "10px",
-            backgroundColor: "#4CAF50",
+            backgroundColor: "#008CBA",
             color: "white",
             border: "none",
             cursor: "pointer",
           }}
         >
-          {isLoading ? "Creating..." : "Create Attestation"}
+          Fetch Attestations
         </button>
+
+        <w3m-button />
+
+        {address && (
+          <div style={{ marginTop: "20px" }}>Connected Wallet: {address}</div>
+        )}
       </div>
-
-      <button
-        onClick={fetchAttestations}
-        disabled={isLoading}
-        style={{
-          padding: "10px",
-          backgroundColor: "#008CBA",
-          color: "white",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        Fetch Attestations
-      </button>
-
-      <w3m-button />
-
-      {address && (
-        <div style={{ marginTop: "20px" }}>Connected Wallet: {address}</div>
-      )}
-    </div>
+    </Layout>
   );
 }
