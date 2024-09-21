@@ -23,10 +23,26 @@ function OnboardCompany() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Submit the form data to backend API
-    console.log(companyDetails);
+    try {
+      const response = await fetch("http://localhost:8000/api/auth/companies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(companyDetails),
+      });
+
+      if (response.ok) {
+        console.log("Company onboarded successfully");
+      } else {
+        const errorData = await response.json();
+        console.error("Error onboarding company:", errorData.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
