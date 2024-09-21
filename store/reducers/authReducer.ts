@@ -1,12 +1,10 @@
 import { AuthState, AuthActionTypes, LOGIN, LOGOUT } from "../types/authTypes";
 
-// Initial state
 const initialState: AuthState = {
   token: null,
   user: null,
 };
 
-// Auth reducer
 export function authReducer(
   state = initialState,
   action: AuthActionTypes

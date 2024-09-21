@@ -11,7 +11,7 @@ const Modal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-30"
-      style={{ backdropFilter: "blur(5px)" }} // Slight blur effect
+      style={{ backdropFilter: "blur(5px)" }}
     >
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4">Check Your Email</h2>

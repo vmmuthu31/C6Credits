@@ -5,6 +5,7 @@ import Modal from "../Components/Modal";
 import { BASEURL } from "@/Constants/constant";
 import WorldIDconnect from "../Components/WorldIDconnect";
 import { v4 as uuidv4 } from "uuid";
+import toast from "react-hot-toast";
 
 function Onboarding() {
   const [step, setStep] = useState(1);
@@ -77,12 +78,13 @@ function Onboarding() {
       });
 
       if (response.ok) {
-        console.log("Company onboarded successfully");
+        toast.success("Company onboarded successfully!");
         setTimeout(() => {
-          setIsModalVisible(true); // Show the modal on success
+          setIsModalVisible(true);
         }, 5000);
       } else {
         const errorData = await response.json();
+        toast.error("Error onboarding company");
         console.error("Error onboarding company:", errorData.message);
       }
     } catch (error) {
@@ -108,11 +110,12 @@ function Onboarding() {
       });
 
       if (response.ok) {
-        console.log("Carbon offset created successfully");
+        toast.success("Carbon offset created successfully!");
         setIsModalVisible(true);
       } else {
         const errorData = await response.json();
         console.error("Error creating carbon offset:", errorData.message);
+        toast.error("Error creating carbon offset");
       }
     } catch (error) {
       console.error("Error submitting offset form:", error);

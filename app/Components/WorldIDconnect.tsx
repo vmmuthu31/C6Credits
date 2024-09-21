@@ -25,13 +25,8 @@ function WorldIDconnect({ userType, onSuccessCallback }: WorldIDconnectProps) {
     console.log("Proof received from IDKit:\n", JSON.stringify(result));
   };
   const handleProof = async (result: ISuccessResult) => {
-    console.log(
-      "Proof received from IDKit, sending to backend:\n",
-      JSON.stringify(result)
-    );
     const data = await verify(result);
     if (data.success) {
-      console.log("Successful response from backend:\n", JSON.stringify(data));
       if (onSuccessCallback) {
         onSuccessCallback();
       }

@@ -27,7 +27,6 @@ exports.createOffset = async (req, res) => {
     const { nfcID, email, carbonOffsetAmount, date, location, purpose } =
       req.body;
 
-    // Check if offsetter already exists
     const existingOffset = await Offset.findOne({ email });
     if (existingOffset) {
       return res
@@ -35,9 +34,6 @@ exports.createOffset = async (req, res) => {
         .json({ message: "Offsetter with this email already exists" });
     }
 
-    // Hash the password
-
-    // Create new offset entry
     const newOffset = new Offset({
       nfcID,
       email,

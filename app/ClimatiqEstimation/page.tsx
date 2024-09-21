@@ -4,12 +4,12 @@ import axios from "axios";
 import Layout from "../utils/Layout";
 
 const ClimatiqEstimation = () => {
-  const [energy, setEnergy] = useState(100); // Default value
+  const [energy, setEnergy] = useState(100);
   const [emissionResult, setEmissionResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const climatiqApiKey = "ZDVMP2V6Q952XEDF2B5FZY4HJM"; // Replace with your actual API key
+  const climatiqApiKey = "ZDVMP2V6Q952XEDF2B5FZY4HJM";
 
   const estimateEmissions = async () => {
     setLoading(true);

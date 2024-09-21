@@ -13,27 +13,23 @@ import {
   Title,
 } from "chart.js";
 
-// Register chart components
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Title);
 
 const Dashboard = () => {
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
 
-  // Initial states for the stats
   const [carbonBridged, setCarbonBridged] = useState(0);
   const [carbonLocked, setCarbonLocked] = useState(0);
   const [liquidity, setLiquidity] = useState(0);
   const [carbonRetired, setCarbonRetired] = useState(0);
 
-  // Final values for the stats
   const finalBridged = 21890661;
   const finalLocked = 19905783;
   const finalLiquidity = 1810027;
   const finalRetired = 210338;
 
   useEffect(() => {
-    // Function to animate numbers
     const animateValue = (start, end, duration, setStateFunc) => {
       let startTime = null;
       const step = (timestamp) => {
@@ -48,22 +44,20 @@ const Dashboard = () => {
       window.requestAnimationFrame(step);
     };
 
-    // Run animations for both stats and chart at the same time
     const loadAnimations = async () => {
       const statAnimationPromise = Promise.all([
-        animateValue(0, finalBridged, 500, setCarbonBridged), // 3 seconds
+        animateValue(0, finalBridged, 500, setCarbonBridged),
         animateValue(0, finalLocked, 500, setCarbonLocked),
         animateValue(0, finalLiquidity, 500, setLiquidity),
         animateValue(0, finalRetired, 500, setCarbonRetired),
       ]);
 
-      await statAnimationPromise; // Wait for both animations to finish
+      await statAnimationPromise;
     };
 
     loadAnimations();
   }, []);
 
-  // Sample Data for Carbon Pool Composition
   const poolComposition = {
     labels: [
       "Wakefield Biochar Facility 2",
@@ -100,8 +94,8 @@ const Dashboard = () => {
     responsive: true,
     maintainAspectRatio: false,
     animation: {
-      duration: 3000, // 3 seconds
-      easing: "easeInOutQuad", // Smooth easing effect
+      duration: 3000,
+      easing: "easeInOutQuad",
     },
     plugins: {
       tooltip: {

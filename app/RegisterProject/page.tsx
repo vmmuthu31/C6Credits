@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Use Next.js router
+import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 import {
   Attestation,
@@ -9,27 +9,25 @@ import {
   SignProtocolClient,
   SpMode,
 } from "@ethsign/sp-sdk";
-import { toast } from "react-hot-toast"; // Import toast from react-hot-toast
+import { toast } from "react-hot-toast";
 import Layout from "../utils/Layout";
 
 export default function RegisterProject() {
-  const { address } = useAccount(); // Wagmi hook to get wallet address
+  const { address } = useAccount();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Carbon credit details state
   const [carbonCreditDetails, setCarbonCreditDetails] = useState({
     projectName: "",
     projectType: "",
     carbonAmount: 0,
   });
 
-  // Function to create attestation
   const createAttestation = async () => {
     try {
       setIsLoading(true);
       const client = new SignProtocolClient(SpMode.OnChain, {
-        chain: EvmChains.arbitrumSepolia, // Set your blockchain network
+        chain: EvmChains.arbitrumSepolia,
       });
 
       const { projectName, projectType, carbonAmount } = carbonCreditDetails;
@@ -43,26 +41,22 @@ export default function RegisterProject() {
         Timestamp: timestamp,
       };
 
-      const schemaIdWithType = "onchain_evm_421614_0x100"; // Example schema ID
-      const schemaId = schemaIdWithType.split("_").pop(); // Extract schema ID
+      const schemaIdWithType = "onchain_evm_421614_0x100";
+      const schemaId = schemaIdWithType.split("_").pop();
 
-      // Create attestation using SignProtocolClient
       const createAttestationRes = await client.createAttestation({
         schemaId,
         data,
       });
 
-      console.log("Attestation created:", createAttestationRes);
-      toast.success("Carbon Credit Attestation created successfully!"); // Show success toast
+      toast.success("Carbon Credit Attestation created successfully!");
     } catch (error) {
       console.error("Error creating attestation:", error);
-      toast.error("Failed to create attestation"); // Show error toast
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Fetch attestations
   const fetchAttestations = async () => {
     const indexService = new IndexService("testnet");
     const res = await indexService.queryAttestationList({
@@ -73,14 +67,12 @@ export default function RegisterProject() {
       mode: "onchain",
       indexingValue: "",
     });
-    console.log("Attestation list:", res);
 
     if (res?.rows) {
       const filteredAttestations = res.rows.filter(
         (attestation) =>
           attestation.attester.toLowerCase() === address.toLowerCase()
       );
-      console.log("Filtered attestations:", filteredAttestations);
     }
   };
 

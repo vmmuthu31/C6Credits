@@ -48,7 +48,6 @@ const generateToken = (email) => {
   return jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "2d" });
 };
 
-// Make sure to export all functions
 module.exports = {
   generateToken,
   sendInviteEmail,
@@ -89,9 +88,6 @@ module.exports = {
       if (!user) {
         user = await Offset.findOne({ email: decoded.email.toLowerCase() });
       }
-
-      console.log("User found:", user);
-
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -121,7 +117,6 @@ module.exports = {
       if (!isMatch) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
-      console.log(user);
       const token = jwt.sign(
         { id: user._id, usertype: user.usertype },
         process.env.JWT_SECRET,

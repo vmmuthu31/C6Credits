@@ -31,7 +31,6 @@ export const loginAction = (token: string, user: User): AuthActionTypes => ({
   payload: { token, user },
 });
 
-// Action creator for logout
 export const logoutAction = (): AuthActionTypes => ({
   type: LOGOUT,
 });

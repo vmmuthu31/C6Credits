@@ -48,7 +48,6 @@ export default function Home() {
   const user = useSelector((state) => state.auth.user);
 
   function handleredirect() {
-    console.log("toknen", token);
     if (!token) {
       router.push("/Onboarding");
     } else {
