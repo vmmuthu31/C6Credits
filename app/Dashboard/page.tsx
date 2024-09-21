@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../utils/Layout";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,13 +11,12 @@ import {
   Tooltip,
   Title,
 } from "chart.js";
+import useRequireAuth from "../hooks/useRequireAuth";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Title);
 
 const Dashboard = () => {
-  const token = useSelector((state) => state.auth.token);
-  const user = useSelector((state) => state.auth.user);
-
+  const { token, user } = useRequireAuth();
   const [carbonBridged, setCarbonBridged] = useState(0);
   const [carbonLocked, setCarbonLocked] = useState(0);
   const [liquidity, setLiquidity] = useState(0);

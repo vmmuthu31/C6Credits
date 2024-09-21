@@ -4,9 +4,9 @@ import React from "react";
 import logo from "../assets/logo.svg";
 import { ConnectButton } from "../context";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import useRequireAuth from "../hooks/useRequireAuth";
 const DashboardNavbar = () => {
-  const token = useSelector((state) => state.auth.token);
+  const { token } = useRequireAuth();
 
   return (
     <nav className="bg-[#002A16] p-4 shadow-md flex justify-between items-center">
