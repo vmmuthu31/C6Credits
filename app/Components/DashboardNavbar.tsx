@@ -1,12 +1,19 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import logo from "../assets/logo.svg";
 import { ConnectButton } from "../context";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 const DashboardNavbar = () => {
+  const token = useSelector((state) => state.auth.token);
+
   return (
     <nav className="bg-[#002A16] p-4 shadow-md flex justify-between items-center">
-      <Link className="flex gap-2 items-center" href="/">
+      <Link
+        className="flex gap-2 items-center"
+        href={`${token ? "/Dashboard" : "/"}`}
+      >
         <Image
           src={logo}
           alt="C6Credits"

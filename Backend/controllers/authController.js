@@ -82,9 +82,15 @@ module.exports = {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      let user =
-        (await Company.findOne({ contactEmail: decoded.email })) ||
-        (await Offset.findOne({ email: decoded.email }));
+
+      let user = await Company.findOne({
+        contactEmail: decoded.email.toLowerCase(),
+      });
+      if (!user) {
+        user = await Offset.findOne({ email: decoded.email.toLowerCase() });
+      }
+
+      console.log("User found:", user);
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -95,6 +101,7 @@ module.exports = {
 
       res.status(200).json({ message: "Password set successfully" });
     } catch (error) {
+      console.error("Error setting password:", error);
       res.status(500).json({ message: "Error setting password", error });
     }
   },

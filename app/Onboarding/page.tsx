@@ -426,10 +426,11 @@ function Onboarding() {
                 />
               </div>
               <div className="pb-4">
-                <WorldIDconnect
+                {/* <WorldIDconnect
                   userType={userType}
                   onSuccessCallback={handleOffsetSubmit}
-                />
+                /> */}
+                <button onClick={handleOffsetSubmit}>he</button>
               </div>{" "}
               <div className="flex justify-between">
                 <button
