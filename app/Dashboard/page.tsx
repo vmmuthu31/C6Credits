@@ -4,6 +4,12 @@ import Layout from "../utils/Layout";
 const Page = () => {
   return (
     <Layout>
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+          Create Attestation
+        </button>
+      </div>
       <div className="flex h-screen">
         <div className="p-8 space-y-8">
           {/* Overview Stats */}
