@@ -3,7 +3,7 @@ import Layout from "../utils/Layout";
 
 const Page = () => {
   const poolDetails = {
-    poolName: "Toucan Biochar Carbon Pool (CHAR)",
+    poolName: "C6Credits Biochar Carbon Pool (CHAR)",
     price: 153.57,
     totalCredits: 1606,
     composition: [

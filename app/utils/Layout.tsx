@@ -4,7 +4,7 @@ import DashboardNavbar from "../Components/DashboardNavbar";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <DashboardNavbar />
       <div className="flex flex-grow">
         <Sidebar />
