@@ -20,7 +20,7 @@ const NfcOffsetPage = () => {
   const handleOffsetConfirm = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.post(`${BASEURL}/api/apply-offset`, {
+      const res = await axios.post(`${BASEURL}/api/auth/apply-offset`, {
         nfcID,
         carbonOffsetAmount: 2,
       });
