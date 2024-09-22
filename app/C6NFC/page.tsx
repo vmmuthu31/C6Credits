@@ -41,8 +41,7 @@ const NfcOffsetPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-900 via-gray-900 to-indigo-900 text-white">
-      {/* Header */}
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-green-900 via-gray-800 to-gray-900 text-white">
       <div className="text-4xl flex gap-3 items-center font-extrabold text-white mb-6 tracking-wide">
         <Image
           src={logo}
@@ -57,19 +56,16 @@ const NfcOffsetPage = () => {
         </p>{" "}
       </div>
 
-      {/* Display NFC ID */}
-      <div className="mb-4 text-lg">
+      <div className="mb-4 text-center text-lg">
         <span className="font-semibold text-gray-300">NFC ID: </span>
         <span className="text-blue-300">{nfcID}</span>
       </div>
 
-      {/* Display Available Credits */}
       <div className="mb-8 text-lg">
         <span className="font-semibold text-gray-300">Available Credits: </span>
         <span className="text-green-400">{credits}</span>
       </div>
 
-      {/* Confirmation Button */}
       <Button
         type="primary"
         size="large"
@@ -82,7 +78,6 @@ const NfcOffsetPage = () => {
         {isLoading ? <Spin /> : "Confirm Offset (2 Credits)"}
       </Button>
 
-      {/* Success Modal */}
       <Modal
         title="Offset Successful"
         open={isModalOpen}
@@ -92,12 +87,12 @@ const NfcOffsetPage = () => {
         centered
         bodyStyle={{ backgroundColor: "#1a202c", color: "#fff" }}
       >
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col pt-3 items-center justify-center">
           <CheckCircleOutlined style={{ fontSize: "50px", color: "green" }} />
           <h2 className="mt-4 text-lg">Carbon offset applied successfully!</h2>
           <iframe
             src="https://giphy.com/embed/8hZqxM7jwDnmrAoYat"
-            width="480"
+            width="300"
             height="271"
             frameBorder="0"
             className="giphy-embed"
