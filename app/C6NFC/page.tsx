@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { Spin, Button, Modal } from "antd";
