@@ -109,18 +109,7 @@ function Onboarding() {
 
   const handleOffsetSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    writeContract({ 
-      abi,
-      address: contractAddresss,
-      functionName: 'registerProject',
-      args: [
-        offsetDetails.purpose,
-        offsetDetails.location,
-        offsetDetails.carbonOffsetAmount,
-        
-        1
-      ],
-   })
+   
 
     const formattedDate = new Date(offsetDetails.date);
 

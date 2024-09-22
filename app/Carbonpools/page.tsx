@@ -1,7 +1,22 @@
-import React from "react";
+"use client"
+import React,{useState} from "react";
 import Layout from "../utils/Layout";
-
+import {
+  cookieToInitialState,
+  useAccount,
+  useDisconnect,
+  WagmiProvider,
+  useReadContract,
+  useWriteContract,
+  type Config,
+} from "wagmi";
+import { ethers } from 'ethers';
+import {Buy} from "../config/integration"
+import abi from "../config/contractAbi.json"
+import toast from "react-hot-toast";
+const contractAddresss = "0x064fDd34631E558dBD57EA80aaf4B02Da4b1fA19";
 const Page = () => {
+  const [hashval, setHashval] = useState("")
   const poolDetails = {
     poolName: "C6Credits Biochar Carbon Pool (CHAR)",
     price: 153.57,
@@ -40,6 +55,38 @@ const Page = () => {
     ],
   };
 
+  const { writeContract } = useWriteContract()
+
+  const HandleBuy = async () => {
+    console.log("buy");
+    console.log("buy2");
+   try {
+    console.log("write panan porom");
+    
+const res = await Buy();
+
+console.log("res",res);
+toast(`hash : ${res.hash}`)
+const abcc  =  res.hash
+setHashval(abcc)
+return;
+   await writeContract({ 
+      abi,
+      address: contractAddresss,
+      functionName: 'buyTokens',
+      args: [
+        '1',
+        '10',
+        'Carbon offset Data',
+        '16015286601757825753',
+        '0x121e8F62F20f34f7071424c567f30518C2735289'
+      ]    } 
+  )}catch (error) {
+    console.log("error in buy tokens", error);
+    
+   }
+    
+  }
   return (
     <Layout>
       <div className="flex h-screen">
@@ -94,14 +141,20 @@ const Page = () => {
                 <p className="text-xl font-bold">
                   The World&apos;s First Liquid Market for Biochar
                 </p>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 w-full">
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 w-full"  onClick={HandleBuy}>
                   Buy CHAR
                 </button>
                 <button className="border px-4 py-2 rounded-lg mt-2 w-full">
                   Contact us
                 </button>
               </div>
-            </div>
+
+              <div className="mt-5 flex justify-center items-center w-[200px]"  onClick={() => {
+      navigator.clipboard.writeText(hashval);
+      alert("Hash copied to clipboard!");
+    }}>
+                Hash
+</div>            </div>
           </div>
         </main>
       </div>
