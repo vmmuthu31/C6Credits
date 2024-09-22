@@ -56,3 +56,26 @@ exports.createOffset = async (req, res) => {
     res.status(500).json({ message: "Error saving offset data", error });
   }
 };
+
+exports.applyOffsetByNfc = async (req, res) => {
+  try {
+    const { nfcID, carbonOffsetAmount } = req.body;
+    const offsetter = await Offset.findOne({ nfcID });
+    if (!offsetter) {
+      return res
+        .status(404)
+        .json({ message: "User not found with this NFC ID" });
+    }
+    if (offsetter.carbonOffsetAmount < carbonOffsetAmount) {
+      return res.status(400).json({ message: "Insufficient carbon credits" });
+    }
+    offsetter.carbonOffsetAmount -= carbonOffsetAmount;
+    await offsetter.save();
+    res.status(200).json({
+      message: "Carbon offset applied successfully",
+      remainingBalance: offsetter.carbonOffsetAmount,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error applying carbon offset", error });
+  }
+};

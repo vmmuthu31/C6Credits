@@ -13,6 +13,7 @@ const {
   getOffsets,
   getOffsetById,
   createOffset,
+  applyOffsetByNfc,
 } = require("../controllers/offsetController");
 const protect = require("../middleware/authMiddleware");
 
@@ -29,5 +30,7 @@ router.post("/companies", createCompany);
 router.get("/offsets", protect, getOffsets);
 router.get("/offsets/:id", protect, getOffsetById);
 router.post("/offsets", createOffset);
+
+router.post("/apply-offset", applyOffsetByNfc);
 
 module.exports = router;
