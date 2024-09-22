@@ -5,6 +5,8 @@ import axios from "axios";
 import { Spin, Button, Modal } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { BASEURL } from "@/Constants/constant";
+import logo from "../assets/logo.svg";
+import Image from "next/image";
 
 const successGif = "https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif";
 
@@ -39,18 +41,32 @@ const NfcOffsetPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white">
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-900 via-gray-900 to-indigo-900 text-white">
       {/* Header */}
-      <h1 className="text-3xl font-bold mb-4">NFC Offset System</h1>
+      <div className="text-4xl flex gap-3 items-center font-extrabold text-white mb-6 tracking-wide">
+        <Image
+          src={logo}
+          alt="C6Credits"
+          className="h-10 w-10"
+          width={10}
+          height={10}
+        />{" "}
+        <p className="relative text-xl text-white  playfair">
+          C<span className="absolute text-[18px] top-2">6</span>{" "}
+          <span className="pl-3">Credit</span>
+        </p>{" "}
+      </div>
 
       {/* Display NFC ID */}
-      <div className="mb-2">
-        <span className="font-semibold">NFC ID: </span> {nfcID}
+      <div className="mb-4 text-lg">
+        <span className="font-semibold text-gray-300">NFC ID: </span>
+        <span className="text-blue-300">{nfcID}</span>
       </div>
 
       {/* Display Available Credits */}
-      <div className="mb-6">
-        <span className="font-semibold">Available Credits: </span> {credits}
+      <div className="mb-8 text-lg">
+        <span className="font-semibold text-gray-300">Available Credits: </span>
+        <span className="text-green-400">{credits}</span>
       </div>
 
       {/* Confirmation Button */}
@@ -59,7 +75,9 @@ const NfcOffsetPage = () => {
         size="large"
         onClick={handleOffsetConfirm}
         disabled={isLoading || credits < 2}
-        className="bg-blue-500 hover:bg-blue-600"
+        className={`bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-2 rounded-lg transition-all ease-in-out duration-300 ${
+          isLoading || credits < 2 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
         {isLoading ? <Spin /> : "Confirm Offset (2 Credits)"}
       </Button>
@@ -72,15 +90,24 @@ const NfcOffsetPage = () => {
         onCancel={() => setIsModalOpen(false)}
         footer={null}
         centered
+        bodyStyle={{ backgroundColor: "#1a202c", color: "#fff" }}
       >
         <div className="flex flex-col items-center justify-center">
           <CheckCircleOutlined style={{ fontSize: "50px", color: "green" }} />
           <h2 className="mt-4 text-lg">Carbon offset applied successfully!</h2>
-          <img
-            src={successGif}
-            alt="Success GIF"
-            className="w-48 h-48 mt-4 rounded-lg"
-          />
+          <iframe
+            src="https://giphy.com/embed/8hZqxM7jwDnmrAoYat"
+            width="480"
+            height="271"
+            frameBorder="0"
+            className="giphy-embed"
+            allowFullScreen
+          ></iframe>
+          <p>
+            <a href="https://giphy.com/gifs/earthhour-connect2earth-earthhour2018-30march2019-8hZqxM7jwDnmrAoYat">
+              via GIPHY
+            </a>
+          </p>
         </div>
       </Modal>
     </div>
